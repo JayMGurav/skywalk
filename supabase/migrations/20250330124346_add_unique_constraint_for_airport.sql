@@ -1,0 +1,1 @@
+ALTER TABLE public.airports ADD CONSTRAINT unique_airport_code UNIQUE (code);
