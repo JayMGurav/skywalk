@@ -31,12 +31,12 @@ export function SelectTicketType() {
           Traveller(s): {checkoutDetails?.numberOfTravellers}
           {" | "}
           {format(
-            checkoutDetails?.segments?.[0]?.departureTime as Date,
+            checkoutDetails?.segments?.[0]?.departureTime ?? new Date(),
             "E do MMM",
           )}
           {" - "}
           {format(
-            checkoutDetails?.segments?.[0]?.arrivalTime as Date,
+            checkoutDetails?.segments?.[0]?.arrivalTime ?? new Date(),
             "E do MMM",
           )}
         </span>
@@ -148,7 +148,7 @@ export function SelectTicketType() {
                           style: "currency",
                           currency:
                             checkoutDetails?.priceBreakdown?.baseFare
-                              ?.currencyCode,
+                              ?.currencyCode ?? "INR",
                         }).format(
                           (checkoutDetails?.priceBreakdown?.baseFare?.units ||
                             0) +
@@ -164,7 +164,7 @@ export function SelectTicketType() {
                         {new Intl.NumberFormat("en-IN", {
                           style: "currency",
                           currency:
-                            checkoutDetails?.priceBreakdown?.tax?.currencyCode,
+                            checkoutDetails?.priceBreakdown?.tax?.currencyCode ?? "INR",
                         }).format(
                           (checkoutDetails?.priceBreakdown?.tax?.units || 0) +
                             Number(
@@ -185,7 +185,7 @@ export function SelectTicketType() {
                 {new Intl.NumberFormat("en-IN", {
                   style: "currency",
                   currency:
-                    checkoutDetails?.priceBreakdown?.total?.currencyCode,
+                    checkoutDetails?.priceBreakdown?.total?.currencyCode ?? "INR",
                 }).format(
                   (checkoutDetails?.priceBreakdown?.total?.units || 0) +
                     Number(

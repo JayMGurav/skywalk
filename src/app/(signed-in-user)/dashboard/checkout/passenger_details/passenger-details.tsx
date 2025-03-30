@@ -83,12 +83,12 @@ export function PassengerDetails({ user }: { user?: LoggedInUser }) {
           Traveller(s): {checkoutDetails?.numberOfTravellers}
           {" | "}
           {format(
-            new Date(checkoutDetails?.segments?.[0]?.departureTime ?? ""),
+            new Date(checkoutDetails?.segments?.[0]?.departureTime ?? new Date().toDateString()),
             "E do MMM",
           )}
           {" - "}
           {format(
-            new Date(checkoutDetails?.segments?.[0]?.arrivalTime ?? ""),
+            new Date(checkoutDetails?.segments?.[0]?.arrivalTime ?? new Date().toDateString()),
             "E do MMM",
           )}
         </span>
@@ -301,7 +301,7 @@ export function PassengerDetails({ user }: { user?: LoggedInUser }) {
                           style: "currency",
                           currency:
                             checkoutDetails?.priceBreakdown?.baseFare
-                              ?.currencyCode,
+                              ?.currencyCode ?? "INR",
                         }).format(
                           (checkoutDetails?.priceBreakdown?.baseFare?.units ||
                             0) +
@@ -317,7 +317,7 @@ export function PassengerDetails({ user }: { user?: LoggedInUser }) {
                         {new Intl.NumberFormat("en-IN", {
                           style: "currency",
                           currency:
-                            checkoutDetails?.priceBreakdown?.tax?.currencyCode,
+                            checkoutDetails?.priceBreakdown?.tax?.currencyCode ?? "INR",
                         }).format(
                           (checkoutDetails?.priceBreakdown?.tax?.units || 0) +
                             Number(

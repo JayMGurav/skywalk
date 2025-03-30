@@ -1,5 +1,6 @@
 import { CabinClassEnum } from "./booking.type";
 import { Airport } from "./flight.types";
+import { Gender } from "./user.types";
 
 export type Price = {
   currencyCode: string;
@@ -52,7 +53,7 @@ export interface CheckoutInterface {
   travellers: Array<{
     firstName: string;
     lastName: string;
-    gender: "Male" | "Female" | "Other";
+    gender: Gender
   }>;
   token: string;
   ticketType: "standard" | "flexible";
