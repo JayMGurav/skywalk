@@ -1,5 +1,5 @@
 function SearchResultsPage() {
-   return null
+   return null;
 }
 
 export default SearchResultsPage;

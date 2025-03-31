@@ -1,5 +1,7 @@
 import { createBooking } from "@/data/server/booking";
 import { CheckoutInterface } from "@/types/checkout.type";
+import { createClient } from "@/utils/supabase/server";
+import { revalidatePath } from "next/cache";
 
 export async function POST(req: Request) {
   if (req.method === "POST") {
@@ -12,10 +14,22 @@ export async function POST(req: Request) {
         { status: 400 },
       );
     }
-    console.log({ checkoutData: JSON.stringify(checkoutData, null, 2) });
     try {
+
+      const supabase = await createClient();
+      
+      const {
+        data: { user }
+      } = await supabase.auth.getUser();
+
+      if(!user){
+        console.error("User not found, please login!");
+        revalidatePath("/", "layout");
+        Response.redirect("/login");
+      }
+
+
       const result = await createBooking(checkoutData);
-      console.log({ result });
       if (result.success) {
         return Response.json({ bookingId: result.bookingId }, { status: 200 });
       } else {

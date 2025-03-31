@@ -79,13 +79,13 @@ export function RoundTripBookingForm() {
   const form = useForm<RoundTripyFormValues>({
     resolver: zodResolver(roundTripFormSchema),
     defaultValues: {
-      departureCityId: "",
-      departureCityName: "",
-      arrivalCityName: "",
-      arrivalCityId: "",
-      departureDate: new Date(),
-      returnDate: new Date(),
-      adults:  1,
+      departureCityId: searchParams.get("fromId") || "",
+      departureCityName: searchParams.get("fromCityName") || "",
+      arrivalCityName: searchParams.get("toCityName") || "",
+      arrivalCityId: searchParams.get("toId") || "",
+      departureDate: new Date(searchParams.get("departDate") || new Date()),
+      returnDate: new Date(searchParams.get("returnDate") || new Date()),
+      adults: Number(searchParams.get("adults")) || 1,
       tripType: TripTypeEnum.ROUND_TRIP,
       cabinClass: CabinClassEnum.ECONOMY,
       // infants: 0,
@@ -142,14 +142,16 @@ export function RoundTripBookingForm() {
           <FlightCitySelectionField
             label="Departure City"
              name="departureCityName"
+             defaultValue={form.getValues().departureCityName}
              idName="departureCityId"
             placeholder="Select your departure city"
             form={form}
           />
           <FlightCitySelectionField
             label="Arrival City"
-              name="arrivalCityName"
-              idName="arrivalCityId"
+            name="arrivalCityName"
+            defaultValue={form.getValues().arrivalCityName}
+            idName="arrivalCityId"
             placeholder="Select your arrival city"
             form={form}
           />

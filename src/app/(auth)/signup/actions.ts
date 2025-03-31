@@ -23,7 +23,6 @@ export async function signup(formData: FormData) {
       },
     },
   };
-  console.log({data: JSON.stringify(data, null, 2)});
 
   const { error } = await supabase.auth.signUp(data);
 

@@ -6,9 +6,17 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Badge } from "@/components/ui/badge"
 import { BookingDetailsDialog } from "./booking-detail";
 import { Skeleton } from "@/components/ui/skeleton";
+import Link from "next/link";
 
 export async function MyBookingList() {
   const data = await getMyFlightBookings();
+
+  if(!data){
+    <div className="w-full h-[50vh] flex items-center justify-center">
+      <p>You haven't booked any flights</p>
+      <p>Go ahead and book your next travel <Link href="/dashboard/search">here</Link></p>
+    </div>
+  }
 
  return (
   <div className="flex w-full flex-col gap-2 mt-10 px-4">
@@ -29,10 +37,10 @@ export function BookingDetails({ booking }: {booking: any}) {
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
             <div>
               <p className="text-sm text-muted-foreground">Booking Reference</p>
-              <CardTitle className="text-xl">{booking.id.substring(0, 8).toUpperCase()}</CardTitle>
+              <CardTitle className="text-xl">{booking?.id?.substring(0, 8)?.toUpperCase()}</CardTitle>
             </div>
             <Badge variant="outline" className="mt-2 md:mt-0">
-              {booking.ticket_type.toUpperCase()}
+              {booking?.ticket_type?.toUpperCase()}
             </Badge>
           </div>
         </CardHeader>
@@ -41,21 +49,21 @@ export function BookingDetails({ booking }: {booking: any}) {
             <div className="space-y-2">
               <div className="flex items-center gap-2">
                 <CalendarIcon className="h-4 w-4 text-muted-foreground" />
-                <span className="text-sm">Booked on {format(new Date(booking.created_at), "MMM dd, yyyy")}</span>
+                <span className="text-sm">Booked on {format(new Date(booking?.created_at), "MMM dd, yyyy")}</span>
               </div>
               <div className="flex items-center gap-2">
                 <User className="h-4 w-4 text-muted-foreground" />
-                <span className="text-sm">{booking.number_of_travellers} Traveller</span>
+                <span className="text-sm">{booking?.number_of_travellers} Traveller</span>
               </div>
             </div>
             <div className="space-y-2">
               <div className="flex items-center gap-2">
                 <Mail className="h-4 w-4 text-muted-foreground" />
-                <span className="text-sm">{booking.contact_email}</span>
+                <span className="text-sm">{booking?.contact_email}</span>
               </div>
               <div className="flex items-center gap-2">
                 <Phone className="h-4 w-4 text-muted-foreground" />
-                <span className="text-sm">{booking.contact_phone}</span>
+                <span className="text-sm">{booking?.contact_phone}</span>
               </div>
             </div>
           </div>

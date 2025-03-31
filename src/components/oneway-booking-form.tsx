@@ -76,18 +76,18 @@ export function OneWayBookingForm() {
   const form = useForm<OneWayFormValues>({
     resolver: zodResolver(oneWayFormSchema),
     defaultValues: {
-      departureCityId: "",
-      departureCityName: "",
-      arrivalCityName: "",
-      arrivalCityId: "",
-      departureDate: new Date(),
-      adults: 1,
+      departureCityId: searchParams.get("fromId") || "",
+      departureCityName: searchParams.get("fromCityName") || "",
+      arrivalCityName: searchParams.get("toCityName") || "",
+      arrivalCityId: searchParams.get("toId") || "",
+      departureDate: new Date(searchParams.get("departDate") || new Date()),
+      adults: Number(searchParams.get("adults")) || 1,
       tripType: TripTypeEnum.ONE_WAY,
       cabinClass: CabinClassEnum.ECONOMY,
       // infants: 0,
     },
   });
-
+ 
   const createQueryString = useCallback(
     (params: Array<{name: string; value: string}>) => {
       
@@ -121,7 +121,6 @@ export function OneWayBookingForm() {
     ])
     // only to be called in booking form
 
-    console.log({newSearchParams})
     router.push(pathname + "/results?" + newSearchParams)
   }
 
@@ -138,12 +137,14 @@ export function OneWayBookingForm() {
             label="Departure City"
             name="departureCityName"
             idName="departureCityId"
+            defaultValue={form.getValues().departureCityName}
             placeholder="Select your departure city"
             form={form}
           />
           <FlightCitySelectionField
             label="Arrival City"
             name="arrivalCityName"
+            defaultValue={form.getValues().arrivalCityName}
             idName="arrivalCityId"
             placeholder="Select your arrival city"
             form={form}

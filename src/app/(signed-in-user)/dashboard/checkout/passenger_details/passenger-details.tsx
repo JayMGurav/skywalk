@@ -93,8 +93,8 @@ export function PassengerDetails({ user }: { user?: LoggedInUser }) {
           )}
         </span>
         <h1 className="text-2xl font-bold">
-          {checkoutDetails?.segments[0]?.departureAirport?.cityName} to{" "}
-          {checkoutDetails?.segments[0]?.arrivalAirport?.cityName}
+          {checkoutDetails?.segments?.[0]?.departureAirport?.cityName} to{" "}
+          {checkoutDetails?.segments?.[0]?.arrivalAirport?.cityName}
         </h1>
       </div>
       <div className="mt-10">

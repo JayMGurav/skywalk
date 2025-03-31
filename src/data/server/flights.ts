@@ -95,7 +95,6 @@ export async function getFlights({
     //   adults
     // });
 
-    console.log(JSON.stringify(searchFlightsResponse, null, 2))
 
     if (searchFlightsResponse && searchFlightsResponse?.data)  {
       return { success: true, data: searchFlightsResponse.data.flightOffers };

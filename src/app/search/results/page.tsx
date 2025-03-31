@@ -8,7 +8,7 @@ async function SearchResultsPage({
     searchParams: Promise<SearchInterface>
   }) {
     const search_params = await searchParams
-    console.log({search_params})
+
     return (
             <div className="w-full">
                 <Suspense fallback={<FlightResultsFallback />} key={search_params.departDate}>

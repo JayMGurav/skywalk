@@ -39,7 +39,7 @@ export function CheckAndPay() {
       <div className="flex h-50 items-center justify-center">
         Something went wrong{" "}
         <Link
-          href="/dashboard/flights"
+          href="/dashboard/search"
           className="ml-2 text-blue-300 underline"
         >
           Try again
@@ -49,7 +49,7 @@ export function CheckAndPay() {
   }
 
   async function bookFlight() {
-    // console.log({ checkoutDetails });
+
     const response = await fetch("/api/flights/book", {
       method: "POST",
       body: JSON.stringify(checkoutDetails),
@@ -70,12 +70,12 @@ export function CheckAndPay() {
           Traveller(s): {checkoutDetails?.numberOfTravellers}
           {" | "}
           {format(
-            new Date(checkoutDetails?.segments?.[0]?.departureTime ?? ""),
+            new Date(checkoutDetails?.segments?.[0]?.departureTime ?? new Date().toDateString()),
             "E do MMM",
           )}
           {" - "}
           {format(
-            new Date(checkoutDetails?.segments?.[0]?.arrivalTime ?? ""),
+            new Date(checkoutDetails?.segments?.[0]?.arrivalTime ?? new Date().toDateString()),
             "E do MMM",
           )}
         </span>

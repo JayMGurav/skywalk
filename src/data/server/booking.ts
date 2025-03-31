@@ -4,13 +4,15 @@ import { Gender } from "@/types/user.types";
 import { priceFormatter } from "@/utils/price-formatter";
 import { createClient } from "@/utils/supabase/server";
 
+
 export async function createBooking(checkoutData: CheckoutInterface) {
   try {
     const supabase = await createClient();
 
     const {
-      data: { user },
+      data: { user }, error: userError
     } = await supabase.auth.getUser();
+    console.log({user, userError})
 
     if (!user) {
       return { success: false, error: "User Not found." };

@@ -37,6 +37,7 @@ const fetcher = (url: string) => {
 export function FlightCitySelectionField({
   label,
   name,
+  defaultValue,
   idName,
   placeholder,
   form,
@@ -45,12 +46,13 @@ export function FlightCitySelectionField({
   name: string;
   idName: string;
   placeholder: string;
+  defaultValue?: string,
   callback?: (selectedCity: CityInterface) => void;
   form: any; // eslint-disable-line @typescript-eslint/no-explicit-any
 }) {
 
   const [cmdDialogOpen, setCmdDialogOpen] = useState<boolean>(false);
-  const [inputValue, setInputValue] = useState<string>("");
+  const [inputValue, setInputValue] = useState<string>(defaultValue || "");
   const [searchTerm, setSearchTerm] = useState<string | null>(null);
   const { data, isLoading } = useSWR(
     searchTerm
@@ -75,7 +77,7 @@ export function FlightCitySelectionField({
       },
     },
   );
-  const [selectedCityName, setSelectedCityName] = useState<string | null>(null);
+  const [selectedCityName, setSelectedCityName] = useState<string | null>(defaultValue || null);
 
   useEffect(() => {
     const debounceCall = debounce(() => {

@@ -1,7 +1,7 @@
 import { BookingForm } from "@/components/booking-form";
 import { Suspense } from "react";
 
-function BookingFormSlot(){
+function BookingFormSlotDefault(){
     return (
         <Suspense>
             <BookingForm />
@@ -9,4 +9,4 @@ function BookingFormSlot(){
     )
 }
 
-export default BookingFormSlot;
+export default BookingFormSlotDefault;
