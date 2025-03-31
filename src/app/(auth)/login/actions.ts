@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 import { createClient } from "@/utils/supabase/server";
+import { encodedRedirect } from "@/utils/redirect";
 
 export async function login(formData: FormData) {
   const supabase = await createClient();
@@ -18,9 +19,9 @@ export async function login(formData: FormData) {
   const { error } = await supabase.auth.signInWithPassword(data);
 
   if (error) {
-    redirect("/error");
+    return encodedRedirect("error", "/sign-in", error.message);
   }
 
-  revalidatePath("/", "layout"); //purge original home page
+  // revalidatePath("/", "layout"); //purge original home page
   redirect("/dashboard/search");
 }

@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+import { Card, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ArrowLeft, Plane } from "lucide-react";
@@ -16,8 +16,22 @@ import {
 import { Gender } from "@/types/user.types";
 
 import { signup } from "./actions";
+import { FormMessage, Message } from "@/components/form-message";
 
-export default function SignupPage() {
+export default async function SignupPage(props: {
+  searchParams: Promise<Message>;
+}) {
+  const searchParams = await props.searchParams;
+  
+  if ("message" in searchParams) {
+    return (
+      <div className="w-full flex-1 flex items-center h-screen sm:max-w-md justify-center gap-2 p-4">
+        <FormMessage message={searchParams} />
+      </div>
+    );
+  }
+
+
   return (
     <main className="min-h-screen bg-background flex">
       {/* Left side - Image */}
@@ -136,6 +150,9 @@ export default function SignupPage() {
                 </Link>
               </div>
             </div>
+            <CardFooter>
+              <FormMessage message={searchParams} />
+            </CardFooter>
           </Card>
         </div>
       </div>

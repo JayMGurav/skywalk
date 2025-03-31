@@ -68,11 +68,18 @@ export async function createBooking(checkoutData: CheckoutInterface) {
       if (travellersError) throw travellersError;
 
       checkoutData.segments.forEach(async (segment) => {
-        // upsert departureAirport
-        const { data: departureAirportData, error: departureAirportError } =
-          await supabase
+        let departureAirportId = null;
+        let arrivalAirportId = null;
+        // check if airport with code exist
+        const {data: existingDepartureAirport} = await supabase.from("airports").select("id").eq("code", segment.departureAirport.code).single();
+
+        if(existingDepartureAirport){
+          departureAirportId = existingDepartureAirport.id;
+        } else {
+          // insert airport
+          const { data: departureAirportData, error: departureAirportError } = await supabase
             .from("airports")
-            .upsert(
+            .insert(
               {
                 code: segment.departureAirport.code,
                 name: segment.departureAirport.name,
@@ -83,38 +90,43 @@ export async function createBooking(checkoutData: CheckoutInterface) {
                 country_name: segment.departureAirport.countryName,
                 province: segment.departureAirport.province,
               },
-              {
-                onConflict: "code",
-              },
             )
             .select("id")
             .single();
 
-        if (departureAirportError) throw departureAirportError;
+          if (departureAirportError) throw departureAirportError;
+          departureAirportId = departureAirportData?.id;
+        }
 
-        // upsert arrivalAirport
-        const { data: arrivalAirportData, error: arrivalAirportError } =
-          await supabase
-            .from("airports")
-            .upsert(
-              {
-                code: segment.arrivalAirport.code,
-                name: segment.arrivalAirport.name,
-                type: segment.arrivalAirport.type,
-                city: segment.arrivalAirport.city,
-                city_name: segment.arrivalAirport.cityName,
-                country: segment.arrivalAirport.country,
-                country_name: segment.arrivalAirport.countryName,
-                province: segment.arrivalAirport.province,
-              },
-              // {
-              //   onConflict: "code",
-              // },
-            )
-            .select("id")
-            .single();
+        const {data: existingArrivalAirport} = await supabase.from("airports").select("id").eq("code", segment.arrivalAirport.code).single();
+        if(existingArrivalAirport){
+          arrivalAirportId = existingArrivalAirport.id;
+        } else {
+          // insert arrivalAirport
+            const { data: arrivalAirportData, error: arrivalAirportError } =
+            await supabase
+              .from("airports")
+              .insert(
+                {
+                  code: segment.arrivalAirport.code,
+                  name: segment.arrivalAirport.name,
+                  type: segment.arrivalAirport.type,
+                  city: segment.arrivalAirport.city,
+                  city_name: segment.arrivalAirport.cityName,
+                  country: segment.arrivalAirport.country,
+                  country_name: segment.arrivalAirport.countryName,
+                  province: segment.arrivalAirport.province,
+                },
+              )
+              .select("id")
+              .single();
 
-        if (arrivalAirportError) throw arrivalAirportError;
+          if (arrivalAirportError) throw arrivalAirportError;
+          arrivalAirportId = arrivalAirportData.id;
+        }
+
+
+        
 
         // Upsert carrier
         const { data: carrierData, error: carrierError } = await supabase
@@ -139,8 +151,8 @@ export async function createBooking(checkoutData: CheckoutInterface) {
             booking_id: bookingData.id,
             departure_time: new Date(segment.departureTime).toISOString(),
             arrival_time: new Date(segment.arrivalTime).toISOString(),
-            departure_airport_id: departureAirportData?.id,
-            arrival_airport_id: arrivalAirportData?.id,
+            departure_airport_id: departureAirportId,
+            arrival_airport_id: arrivalAirportId,
             total_time: segment.totalTime,
             cabin_class: segment.cabinClass,
             flight_number: segment.flightNumber,

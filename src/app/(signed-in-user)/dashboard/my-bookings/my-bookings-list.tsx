@@ -11,11 +11,11 @@ import Link from "next/link";
 export async function MyBookingList() {
   const data = await getMyFlightBookings();
 
-  if(!data){
-    <div className="w-full h-[50vh] flex items-center justify-center">
+  if(!data || data?.length == 0){
+   return ( <div className="w-full h-[50vh] flex items-center justify-center">
       <p>You haven't booked any flights</p>
-      <p>Go ahead and book your next travel <Link href="/dashboard/search">here</Link></p>
-    </div>
+      <p>Go ahead and book your next travel <Link href="/dashboard/search" className="underline text-blue-400">here</Link></p>
+    </div>)
   }
 
  return (

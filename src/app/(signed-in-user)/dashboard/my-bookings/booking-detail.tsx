@@ -1,3 +1,4 @@
+"use client";
 
 import { format } from "date-fns"
 import { Clock, CreditCard,  MapPin,  Plane, User, Briefcase, Luggage } from "lucide-react"
@@ -25,12 +26,8 @@ export function BookingDetailsDialog({ booking }: BookingDetailsProps) {
     return `${hours}h ${minutes}m`
   }
 
-  const segment = booking.booking_segment[0]  
-  const traveler = booking.booking_traveller[0]
-
-  if(!segment || !traveler){
-    return null;
-  }
+  const segment = booking?.booking_segment[0]  
+  const traveler = booking?.booking_traveller[0]
 
 
   return (
@@ -61,15 +58,15 @@ export function BookingDetailsDialog({ booking }: BookingDetailsProps) {
           <div>
             <div className="flex items-center justify-between mb-1">
               <div className="text-center">
-                {segment?.departure_time && <p className="text-2xl font-bold">{format(new Date(segment?.departure_time), "h:mm a")}</p>}
-                {segment?.departure_time && <p className="text-sm text-muted-foreground">{format(new Date(segment?.departure_time), "MMM dd, yyyy")}</p>}
+                {segment?.departure_time ? <p className="text-2xl font-bold">{format(new Date(segment?.departure_time), "h:mm a")}</p> : null}
+                {segment?.departure_time ? <p className="text-sm text-muted-foreground">{format(new Date(segment?.departure_time), "MMM dd, yyyy")}</p> : null}
                 <p className="text-sm font-medium mt-1">{segment?.departure_airport?.code}</p>
                 <p className="text-xs text-muted-foreground">{segment?.departure_airport?.city_name}</p>
               </div>
 
               <div className="text-center">
-                {segment?.arrival_time && <p className="text-2xl font-bold">{format(new Date(segment?.arrival_time), "h:mm a")}</p>}
-                {segment?.arrival_time && <p className="text-sm text-muted-foreground">{format(new Date(segment?.arrival_time),"MMM dd, yyyy")}</p>}
+                {segment?.arrival_time ? <p className="text-2xl font-bold">{format(new Date(segment?.arrival_time), "h:mm a")}</p> : null}
+                {segment?.arrival_time ? <p className="text-sm text-muted-foreground">{format(new Date(segment?.arrival_time),"MMM dd, yyyy")}</p> : null}
                 <p className="text-sm font-medium mt-1">{segment?.arrival_airport.code}</p>
                 <p className="text-xs text-muted-foreground">{segment?.arrival_airport?.city_name}</p>
               </div>
@@ -94,7 +91,7 @@ export function BookingDetailsDialog({ booking }: BookingDetailsProps) {
                 <div className="flex items-center">
                   <Clock className="h-4 w-4 text-muted-foreground" />
                   <span className="text-sm">
-                    {segment?.departure_time && format(new Date(segment?.departure_time), "h:mm a")}, {format(new Date(segment?.departure_time), "MMM dd, yyyy")}
+                    {segment?.departure_time && format(new Date(segment?.departure_time), "h:mm a")} {segment?.departure_time && format(new Date(segment?.departure_time), "MMM dd, yyyy") }
                   </span>
                 </div>
               </div>
@@ -115,7 +112,7 @@ export function BookingDetailsDialog({ booking }: BookingDetailsProps) {
                 <div className="flex items-center gap-2">
                   <Clock className="h-4 w-4 text-muted-foreground" />
                   <span className="text-sm">
-                    {segment?.arrival_time && format(new Date(segment?.arrival_time), "h:mm a")}, {format(new Date(segment?.arrival_time), "MMM dd, yyyy")}
+                    {segment?.arrival_time && format(new Date(segment?.arrival_time), "h:mm a")}, {segment?.arrival_time && format(new Date(segment?.arrival_time), "MMM dd, yyyy")}
                   </span>
                 </div>
               </div>
@@ -221,7 +218,7 @@ export function BookingDetailsDialog({ booking }: BookingDetailsProps) {
             </div>
             <div>
               <p className="font-medium">Payment Details</p>
-              <p className="text-sm text-muted-foreground">Paid on {format(new Date(booking?.created_at), "MMM dd, yyyy")}</p>
+              <p className="text-sm text-muted-foreground">Paid on {booking?.created_at && format(new Date(booking?.created_at), "MMM dd, yyyy")}</p>
             </div>
           </div>
 

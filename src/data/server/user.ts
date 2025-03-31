@@ -102,10 +102,10 @@ export async function getMyFlightBookings() {
         booking_traveller (*),
         booking_segment (
           *,
-          departure_airport:departure_airport_id (*),
-          arrival_airport:arrival_airport_id (*),
-          carrier:carrier_id (*),
-          booking_segment_luggage (*)
+          departure_airport:airports!booking_segment_departure_airport_id_fkey(*),
+          arrival_airport:airports!booking_segment_arrival_airport_id_fkey(*),
+          carrier:carriers!booking_segment_carrier_id_fkey(*),
+          booking_segment_luggage(*)
         )
       `)
       .eq('user_id', user.id);

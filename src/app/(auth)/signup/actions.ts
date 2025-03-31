@@ -1,9 +1,10 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
+// import { revalidatePath } from "next/cache";
+// import { redirect } from "next/navigation";
 
 import { createClient } from "@/utils/supabase/server";
+import { encodedRedirect } from "@/utils/redirect";
 
 
 export async function signup(formData: FormData) {
@@ -12,14 +13,29 @@ export async function signup(formData: FormData) {
   
   // type-casting here for convenience
   // in practice, you should validate your inputs
+
+  const email = formData.get("email")?.toString();
+  const password = formData.get("password")?.toString();
+  const first_name = formData.get("first_name")?.toString();
+  const last_name = formData.get("last_name")?.toString();
+  const gender = formData.get("gender")?.toString();
+
+  if (!email || !password || !first_name || !last_name || !gender) {
+    return encodedRedirect(
+      "error",
+      "/sign-up",
+      "Email, password, firstname, lastname and gender are required",
+    );
+  }
+
   const data = {
-    email: formData.get("email") as string,
-    password: formData.get("password") as string,
+    email,
+    password,
     options: {
       data: {
-        first_name: formData.get("first_name") as string,
-        last_name: formData.get("last_name") as string,
-        gender: formData.get("gender") as string,
+        first_name,
+        last_name,
+        gender
       },
     },
   };
@@ -27,10 +43,13 @@ export async function signup(formData: FormData) {
   const { error } = await supabase.auth.signUp(data);
 
   if (error) {
-    console.log({error: JSON.stringify(error)});
-    redirect("/error");
+    console.error(error.code + " " + error.message);
+    return encodedRedirect("error", "/sign-up", error.message);
+  } else {
+    return encodedRedirect(
+      "success",
+      "/signup",
+      "Thanks for signing up! Please check your email for a verification link.",
+    );
   }
-
-  revalidatePath("/", "layout");
-  redirect("/");
 }

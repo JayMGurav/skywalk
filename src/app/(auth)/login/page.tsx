@@ -1,6 +1,6 @@
-"use client";
+// "use client";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+import { Card, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ArrowLeft, Plane } from "lucide-react";
@@ -8,8 +8,10 @@ import Link from "next/link";
 import { ProgressiveBlur } from "@/components/progressive-blur";
 
 import { login } from "./actions";
+import { FormMessage, Message } from "@/components/form-message";
 
-export default function LoginPage() {
+export default async function LoginPage(props: { searchParams: Promise<Message> }) {
+  const searchParams = await props.searchParams;
   return (
     <main className="min-h-screen bg-background flex">
       {/* Left side - Image */}
@@ -93,6 +95,9 @@ export default function LoginPage() {
                 </Link>
               </div>
             </div>
+            <CardFooter>
+              <FormMessage message={searchParams} />
+            </CardFooter>
           </Card>
         </div>
       </div>
