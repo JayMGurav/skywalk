@@ -13,7 +13,7 @@ export async function GET(req: NextRequest) {
     await supabase.auth.signOut();
   }
 
-  revalidatePath(path || "/")
+  revalidatePath(path || "/", "layout")
   revalidatePath('/', 'layout')
 
   return NextResponse.redirect(new URL("/login", req.url), {
